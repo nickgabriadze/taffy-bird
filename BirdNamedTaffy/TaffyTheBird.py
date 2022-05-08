@@ -69,19 +69,20 @@ def taffyAction(bird, obst1, obst2, obst3, obst4, obst5, obst6):
     gWindow.blit(obThird1, (obst5.x, obst5.y))
     gWindow.blit(obThird2, (obst6.x, obst6.y))
 
-    if obst1.x < -500:
-        obst1.x, obst2.x = WIDTH // 2 + 500, WIDTH // 2 + 500
+    if obst1.x < -100:
+        obst1.x, obst2.x = WIDTH + 200, WIDTH + 200
         obst1.y, obst2.y = arrOfHeights[randIndex1][0], arrOfHeights[randIndex1][1]
-    if obst3.x < -300:
-        obst3.x, obst4.x = WIDTH // 2 + 900, WIDTH // 2 + 900
+    if obst3.x < -100:
+        obst3.x, obst4.x = WIDTH + 200, WIDTH + 200
         obst3.y, obst4.y = arrOfHeights[randIndex2][0], arrOfHeights[randIndex2][1]
     if obst5.x < -100:
-        obst5.x, obst6.x = WIDTH // 2 + 1300, WIDTH // 2 + 1300
+        obst5.x, obst6.x = WIDTH + 200, WIDTH + 200
         obst5.y, obst6.y = arrOfHeights[randIndex3][0], arrOfHeights[randIndex3][1]
 
     move(obst1, obst2, obst3, obst4, obst5, obst6)
 
-    if bird.colliderect(obst1) or bird.colliderect(obst2) or bird.colliderect(obst4) or bird.colliderect(obst5) or \
+    if bird.colliderect(obst1) or bird.colliderect(obst2) or bird.colliderect(obst3) or bird.colliderect(obst4) or \
+            bird.colliderect(obst5) or \
             bird.colliderect(obst6):
         return True
 
@@ -134,10 +135,20 @@ def TaffyTheBird():
             else:
                 gameOver = gameOverFont.render("Game Over", False, (255, 255, 0))
                 gameScore = gameOverFont.render(f"Score: {score}", False, (255, 255, 20))
+                dataBaseFile = open("Assets/ScoreFile", "r")
+                bestScore = dataBaseFile.readlines()[0]
+                dataBaseFile.close()
+                if score > int(bestScore):
+                    bestScore = score
+                    dataBaseFile = open("Assets/ScoreFile", "w")
+                    dataBaseFile.write(str(score))
+                    dataBaseFile.close()
+                bestScoreDisplay = gameOverFont.render(f"Best: {bestScore}", False, (255, 255, 20))
                 pressR = font.render("Press R to restart", False, (225, 255, 0))
                 gWindow.blit(gameOver, (WIDTH // 2 - 150, HEIGHT // 2 - 100))
                 gWindow.blit(gameScore, (WIDTH // 2 - 140, HEIGHT // 2 - 40))
-                gWindow.blit(pressR, (WIDTH // 2 - 200, HEIGHT // 2 + 30))
+                gWindow.blit(bestScoreDisplay, (WIDTH // 2 - 140, HEIGHT // 2 + 20))
+                gWindow.blit(pressR, (WIDTH // 2 - 200, HEIGHT // 2 + 90))
                 pressedR = pygame.key.get_pressed()
                 if pressedR[pygame.K_r]:
                     TaffyTheBird()
