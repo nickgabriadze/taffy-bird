@@ -85,7 +85,8 @@ def taffyAction(bird, obst1, obst2, obst3, obst4, obst5, obst6):
             bird.colliderect(obst5) or \
             bird.colliderect(obst6):
         return True
-
+    if bird.y < -20 or bird.y > HEIGHT - 161:
+        return True
 
 def TaffyTheBird():
     runIt = True
